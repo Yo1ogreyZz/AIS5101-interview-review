@@ -127,7 +127,6 @@ result in a deduction of 10% of the points for that essay.
 | Q8: Tell me about a time when you had to explain to a team member why your model performs well when interpolating within the data range but might not be reliable when extrapolating beyond it? |
 | Q9: Imagine you've developed a generative model that can suggest multiple hypotheses/possibilities about possible mechanism. How would you use those generated insights to guide real-world experiments? |
 | Q10: Can you describe a situation where your choice of loss function strongly influenced the outcome of your scientific model, and how you explained that choice to others? |
-|                                                              |
 
 
 
