@@ -92,6 +92,20 @@ To deal with that, I used Principal Component Analysis, or PCA. It basically com
 
 **回答:** 我会使用像扩散图 (Diffusion Maps) 或变分自编码器 (VAE) 这样的方法来找到低维结构。这很有用，因为它允许通过将数据投影到流形上来去噪，并使用（流形上的）测地距离，这比高维空间中的原始欧氏距离更有意义。
 
+**Interview回答**
+
+When I suspect that a complex dataset actually lives on a lower-dimensional manifold, I’d try to uncover that hidden structure using techniques like Diffusion Maps or a Variational Autoencoder.
+
+In simple terms, these methods help reveal the “true shape” of the data — for example, even if the data lives in a 100-dimensional space, it might really vary along just a few meaningful directions. Once we map it to that low-dimensional space, we can denoise it, visualize it more clearly, and measure similarity using *on-manifold* distances that reflect the data’s real geometry, rather than noisy Euclidean distances.
+
+This helps a lot in tasks like clustering or anomaly detection, because it lets the model focus on the intrinsic structure of the data instead of being distracted by high-dimensional noise.
+
+当我怀疑一个复杂数据集其实“藏在”一个更低维的流形上时，我会用一些方法来揭示它的真实结构，比如扩散图（Diffusion Maps）或变分自编码器（VAE）。
+
+简单来说，这些方法能帮助我们找到数据的“真正形状”——虽然它表面上是高维的，比如有上百个特征，但实际上只沿着少数几个有意义的方向变化。把它映射到那个低维空间后，我们不仅能更清楚地可视化数据，还能进行去噪，并用流形上的测地距离来度量相似性，这种距离比原始欧氏距离更符合数据的真实几何关系。
+
+这样做对聚类或异常检测很有帮助，因为模型能更专注于数据的内在结构，而不是被高维噪声干扰。
+
 ------
 
 # Q6: Supervised vs. Unsupervised
@@ -103,6 +117,24 @@ To deal with that, I used Principal Component Analysis, or PCA. It basically com
 **A:** The choice depends on having labels. To classify known apple leaf diseases from our dataset, we have labels like 'rust' or 'scab', so we use **supervised** learning. But to discover *new*, previously unknown cell types from raw RNA-seq data where no labels exist, we must use **unsupervised** clustering.
 
 **回答:** 这个选择取决于是否有标签。要分类我们数据集中已知的苹果叶疾病，我们有像“锈病”或“黑星病”这样的标签，所以我们使用**监督**学习。但要从没有标签的原始RNA序列数据中发现*新的*、未知的细胞类型，我们就必须使用**非监督**聚类。
+
+**Interview回答**
+
+In one of my projects, I had to decide between using supervised and unsupervised learning. The key factor was whether we had reliable labels and what our goal was — prediction or discovery.
+
+For example, when classifying known apple leaf diseases, we already had labeled images like *rust*, *scab*, and *blight*. So supervised learning made sense — we could train a CNN to recognize those categories and evaluate its accuracy directly.
+
+But in another case, when working with raw single-cell RNA-seq data, there were **no labels** at all. The goal there wasn’t to predict, but to *discover* — to find new or previously unknown cell types. In that situation, I used unsupervised clustering methods like PCA and t-SNE followed by DBSCAN to uncover natural groupings.
+
+So my decision always depends on two things: do we have trustworthy labels, and are we trying to predict known outcomes or explore hidden structure in the data.
+
+在我的一个项目中，我需要在监督学习和非监督学习之间做选择。决定性因素其实是两个：**有没有可靠的标签**，以及**目标是预测还是探索**。
+
+比如，在分类苹果叶片疾病时，我们已经有了标注好的样本，如“锈病”“黑星病”“枯斑病”等，这时监督学习最合适——我们可以训练一个CNN模型来识别并评估准确率。
+
+但在另一个案例中，当我处理单细胞RNA测序数据时，完全没有标签，目标不是预测，而是发现新的细胞类型。这种情况下，我用了非监督方法，比如先做PCA和t-SNE降维，再用DBSCAN聚类，从数据本身找出自然分组。
+
+所以我一般的判断逻辑是：**有标签就预测（supervised），没标签就探索（unsupervised）**。
 
 ------
 
@@ -116,6 +148,20 @@ To deal with that, I used Principal Component Analysis, or PCA. It basically com
 
 **回答:** 矢量量化 (VQ) 将复杂的连续结果压缩成一个小的、离散的、有代表性的“码本”。这能减少噪声。我会寻找那些代表稳定的、可复现的实验结果的簇，就像我们在印度数据集中识别出的不同“空气质量状态”。
 
+**Interview回答**
+
+If I have a large set of experimental results and I want to cluster them to find recurring patterns, vector quantization can be really helpful.
+
+In simple terms, it compresses high-dimensional, continuous results into a small “codebook” of representative prototypes. So instead of dealing with thousands of slightly different outcomes, we can represent them with just a few typical patterns — that not only reduces noise but also makes the structure of the data much clearer.
+
+After applying VQ, I’d look at the clusters to see if they correspond to **stable and physically meaningful regimes** — for example, in one project with air-quality data from India, the clusters revealed distinct “air-quality states” that repeated across time and regions. That kind of pattern tells us the quantization captured real, consistent behavior rather than random fluctuations.
+
+如果我面对大量实验结果，想要从中聚类出一些共性的模式，向量量化（VQ）会非常有用。
+
+简单来说，它可以把高维、连续的结果压缩成一个较小的“码本”，每个码代表一种具有代表性的典型模式。这样我们不再需要面对上千个略有差异的实验输出，而是能用几个“代表性原型”去概括它们。这不仅能减少噪声，也让数据结构变得更清晰。
+
+在得到聚类结果后，我会去看这些簇是否反映了**稳定且具有物理意义的状态**。比如在我分析印度空气质量数据的项目中，VQ 聚类结果揭示了不同的“空气质量状态”，这些状态会在不同时间和地区重复出现——这说明模型捕捉到的是真实的规律，而不是随机波动。
+
 ------
 
 # Q8: Interpolation vs. Extrapolation
@@ -127,6 +173,20 @@ To deal with that, I used Principal Component Analysis, or PCA. It basically com
 **A:** I'd explain that our model learns the "map" of the training data. **Interpolation** is like finding a point *inside* that map, which is reliable. **Extrapolation** is asking for a point *outside* the map, where the model has no data and its learned rules may fail, making it unreliable.
 
 **回答:** 我会解释说，我们的模型学习了训练数据的“地图”。**插值**就像在地图*内部*找一个点，这很可靠。**外推**是要求一个地图*外部*的点，模型在那里没有数据，它学到的规则可能会失效，因此不可靠。
+
+**Interview回答**
+
+This actually came up in one of my projects when a teammate asked why our regression model made great predictions within the training range but completely broke down when we tried to predict beyond it.
+
+I explained that the model basically learns the *map* of the data it has seen — interpolation means we’re finding points *inside* that map, where the model has real experience and can make reliable predictions. But extrapolation is like asking the model to guess what’s happening *outside* the map — in regions where it has no data. The relationships it learned inside may no longer hold, so it can easily give unrealistic results.
+
+I also added that if we really need to extrapolate, we should either collect more data covering that range, or use models based on physical or theoretical principles rather than purely data-driven ones. That usually helps make the predictions more trustworthy.
+
+我确实遇到过这种情况：有一次团队成员问我，为什么我们的回归模型在训练数据范围内预测得很好，但一旦超出这个范围就完全不准了。
+
+我解释说，模型其实是学习了它“见过的数据地图”。**插值**相当于在这张地图的“内部”找位置——模型在那片区域有经验，预测会比较可靠。**外推**则像是在让模型去“地图之外”猜测，那片区域它从没见过，所以学到的规律很可能不再适用，预测也容易失真。
+
+我还补充说，如果确实要做外推，可以考虑两种办法：要么收集更多覆盖那部分的训练数据，要么采用有理论或物理基础的模型，而不是纯粹依赖数据驱动。这样外推的结果才会更稳健。
 
 ------
 
@@ -140,12 +200,46 @@ To deal with that, I used Principal Component Analysis, or PCA. It basically com
 
 **回答:** 生成模型学习了一个可能性的“潜在空间”。我们可以从中采样，或在已知点之间插值，以生成新颖的假设。然后我们会将这些生成的特定设计——比如新分子或材料结构——带到现实世界的实验室中去合成和验证。
 
+**Interview回答**
+
+If my generative model can propose multiple hypotheses about possible mechanisms, I’d use it as a *guide* for experiment design rather than a replacement for it.
+
+The model essentially learns a *latent space* — you can think of it as an “idea landscape” where each point represents a plausible mechanism or structure. By sampling different regions of that space or interpolating between known examples, we can generate new, testable hypotheses.
+
+Next, I’d rank those generated candidates based on physical plausibility or predicted performance — for example, which molecule seems most stable, or which material has the most promising properties — and then bring the top few into the lab for synthesis and experimental validation.
+
+This approach is powerful because it lets experiments move from being purely trial-and-error to being *data-guided* — the model helps us explore smarter and faster, but real-world validation still closes the loop.
+
+如果我的生成模型能提出多种关于潜在机制的假设，我会把它当作**实验设计的向导**，而不是取代实验本身的工具。
+
+这个模型其实学习的是一个“潜在空间”，你可以把它理解成一张“创意地图”，其中的每个点都代表一种可能的机制或结构。我可以从这个空间中采样，或者在已知点之间插值，去生成新的、可以验证的假设。
+
+接着，我会根据物理可行性或模型预测表现来对这些生成的候选方案进行排序，比如哪些分子更稳定、哪些材料性质更优，然后挑出最有希望的几个在实验室中合成并验证。
+
+这种方法的优势在于，它让实验从“盲目试错”变成“数据引导”——模型帮助我们更聪明、更高效地探索，而现实实验则是验证和完善整个循环的关键一步。
+
 ------
 
 # Q10: Choice of Loss Function
 
 **Q: Can you describe a situation where your choice of loss function strongly influenced the outcome of your scientific model, and how you explained that choice to others?**
 
+**问： 能否描述一个情境，在其中你所选择的损失函数对你的科学模型结果产生了显著影响？你又是如何向他人解释你做出这种选择的理由的？**
+
 **A:** In the Plant Pathology project, the "multiple_diseases" class was very rare. Using standard Cross-Entropy, the model just ignored it. By switching to **Focal Loss**, which down-weights easy examples, we forced the model to focus on this hard, rare class, which significantly improved its detection rate.
 
 **A (中文):** 在植物病理学项目中，“多种疾病”类别非常罕见。使用标准交叉熵，模型会直接忽略它。通过切换到**Focal Loss**，它会降低简单样本的权重，我们迫使模型专注于这个困难的稀有类别，从而显著提高了它的检测率。
+
+**Interview回答**
+
+In one of my projects on plant pathology, we had a dataset where one class — called *multiple diseases* — was extremely rare compared to healthy or single-disease samples.
+
+When we first trained the model using standard Cross-Entropy loss, it basically ignored that minority class — the accuracy looked great overall, but the recall for *multiple diseases* was almost zero. So I switched to **Focal Loss**, which down-weights easy, overrepresented samples and puts more emphasis on the hard, rare ones.
+
+After that change, the model started paying attention to those few critical samples, and the detection rate for the rare class improved significantly. When explaining this to the team, I put it simply: *“We changed the loss so the model stops chasing easy wins and starts focusing on the cases that matter most.”* That really helped everyone understand the trade-off and the reasoning behind the choice.
+
+在我做植物病理学项目时，我们的数据集中有一个类别叫“多种疾病”，样本非常少，远远低于健康或单一病害的样本数量。
+
+最开始我们用标准的交叉熵损失函数训练模型，结果模型几乎完全忽略了这个少数类——整体准确率看起来很高，但“多种疾病”的召回率几乎为零。于是我改用了 **Focal Loss**。这种损失函数会降低那些“容易分类”的样本权重，让模型把注意力放在困难、稀有的样本上。
+
+切换之后，模型终于开始“看到”这些关键样本，稀有类别的检测率显著提高。后来我向团队解释时，用了一个通俗的说法：“我们换损失函数，是让模型别再只追求简单的正确答案，而去关注那些真正重要、容易被忽略的少数情况。” 这样一讲，大家都立刻明白了背后的逻辑。
